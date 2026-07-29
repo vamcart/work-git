@@ -1,0 +1,17 @@
+    <div class="col-md-3 col-sm-4 col-6">
+    <div class="d-block bg-white shadow-sm rounded-3 py-3 py-sm-4 mb-grid-gutter">
+    {if {$module_data.CATEGORIES_IMAGE} && {$module_data.CATEGORIES_IMAGE} != "images/categories/"}
+    <img class="d-block mx-auto category-image" loading="lazy" src="{$module_data.CATEGORIES_IMAGE}" {if {$module_data.CATEGORIES_IMAGE_WIDTH} > 0} width="{$module_data.CATEGORIES_IMAGE_WIDTH}"{/if} {if {$module_data.CATEGORIES_IMAGE_HEIGHT} > 0} height="{$module_data.CATEGORIES_IMAGE_HEIGHT}"{/if} alt="{$module_data.CATEGORIES_NAME}">
+    {else}
+    <!--<img class="d-block mx-auto category-image" src="images/product_images/noimage.png" style="width: 150px;" alt="{$module_data.CATEGORIES_NAME}">-->
+    {/if}
+    <h3 class="nav-link fs-base pt-1 mb-0 text-center category-name"><a href="{$module_data.CATEGORIES_LINK}">{$module_data.CATEGORIES_NAME}</a></h3>
+
+    <div class="cat-block p-2">
+    {foreach name=aussen item=cats_data from=$module_data.SCATS}
+	 <a href="{$cats_data.link}"><span class="btn btn-outline-primary badge rounded-pill text-dark">{$cats_data.text}</span></a>
+	 {/foreach}    
+    </div>
+
+    </div>
+    </div>

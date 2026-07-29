@@ -1,0 +1,311 @@
+{config_load file="$language/lang_$language.conf" section="product_info"}
+<div itemscope itemtype="http://schema.org/Product">
+{if $info_message}
+<div class="contacterror">
+{$info_message}
+</div>
+{/if}
+
+    <!-- Page Title-->
+    <div class="page-title-overlap bg-dark pt-4">
+      <div class="container text-center justify-content-between py-2 py-lg-3">
+        <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+          <nav aria-label="breadcrumb">
+              <div class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center" itemscope itemtype="http://schema.org/BreadcrumbList">
+              {$navtrail}
+              </div>
+          </nav>
+        </div>
+        <div class="order-lg-1 text-center">
+          <h1 class="h3 text-light mb-0" itemprop="name">{$PRODUCTS_NAME}</h1>
+        </div>
+        
+      </div>
+    </div>
+    <div class="container product-info-page">
+      <!-- Gallery + details-->
+      <div class="bg-light shadow-lg rounded-3 px-4 py-3 mb-5">
+        <div class="px-lg-3">
+          <div class="row">
+            <!-- Product gallery-->
+            <div class="col-lg-7 pe-lg-0 pt-lg-4">
+              <div class="product-gallery">
+                <div class="product-gallery-preview order-sm-2">
+
+                  <div class="product-gallery-preview-item text-center active" id="image0">{if $PRODUCTS_POPUP_LINK!=''}<a href="{$PRODUCTS_POPUP_IMAGE}" title="{$PRODUCTS_NAME}" class="lightbox image-zoom">{/if}<img itemprop="image" src="{$PRODUCTS_IMAGE}" alt="{if $PRODUCTS_IMAGE_DESCRIPTION !=''}{$PRODUCTS_IMAGE_DESCRIPTION}{else}{$PRODUCTS_NAME}{/if}">{if $PRODUCTS_POPUP_LINK!=''}</a>{/if}
+                  </div>
+    {foreach name=slide item=slides from=$mo_img}
+                  <div class="product-gallery-preview-item text-center" id="image{counter name=1}">{if $slides.PRODUCTS_MO_POPUP_LINK !=''}<a href="{$slides.PRODUCTS_MO_POPUP_IMAGE}" title="{$PRODUCTS_NAME}" class="lightbox image-zoom">{/if}<img itemprop="image" src="{$slides.PRODUCTS_MO_IMAGE}" alt="{if $slides.PRODUCTS_MO_IMAGE_DESCRIPTION !=''}{$slides.PRODUCTS_MO_IMAGE_DESCRIPTION}{else}{$PRODUCTS_NAME}{/if}">{if $slides.PRODUCTS_MO_POPUP_LINK !=''}</a>{/if}
+                  </div>
+    {/foreach}
+
+                </div>
+                <div class="product-gallery-thumblist order-sm-1">
+
+                <a class="product-gallery-thumblist-item text-center active" href="#image0"><img src="{$PRODUCTS_IMAGE}" alt="{if $PRODUCTS_IMAGE_DESCRIPTION !=''}{$PRODUCTS_IMAGE_DESCRIPTION}{else}{$PRODUCTS_NAME}{/if}"></a>
+    {foreach name=slide item=slides from=$mo_img}
+                <a class="product-gallery-thumblist-item text-center" href="#image{counter name=2}"><img src="{$slides.PRODUCTS_MO_IMAGE}" alt="{if $slides.PRODUCTS_MO_IMAGE_DESCRIPTION !=''}{$slides.PRODUCTS_MO_IMAGE_DESCRIPTION}{else}{$PRODUCTS_NAME}{/if}"></a>
+    {/foreach}
+                <!--         
+                <a class="product-gallery-thumblist-item video-item" href="https://www.youtube.com/watch?v=1vrXpMLLK14">
+                <div class="product-gallery-thumblist-item-text"><i class="fas fa-video"></i>Video</div>
+                </a>
+                -->
+
+                </div>
+              </div>
+            </div>
+            <!-- Product details-->
+            <div class="col-lg-5 pt-4 pt-lg-0">
+              <div class="product-details ms-auto pb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                <a href="{$PRODUCTS_REVIEWS_URL}" data-scroll>
+                {if $REVIEWS_TOTAL > 0}
+                <div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+                    <div class="star-rating">
+                    {$STAR_RATING}
+                    </div>
+                    <span class="d-inline-block fs-sm text-body align-middle mt-1 ms-1">{$smarty.const.TEXT_TOTAL_REVIEWS}: <span itemprop="reviewCount">{$REVIEWS_TOTAL}</span></span>
+                    <meta itemprop="ratingValue" content="{$REVIEWS_RATING|number_format:1}">
+                </div>
+                {/if}
+                </a> 
+                {if $smarty.const.ENABLE_WISHLIST == 'true'}
+                {if $smarty.const.AJAX_WISHLIST == 'true'}
+                  <a class="wishlist-link-{$PRODUCTS_ID} {if $IN_WISHLIST} btn-outline-danger text-danger{/if} btn-wishlist me-0 me-lg-n3" href="index.php?action=wishlist_now&BUYproducts_id={$PRODUCTS_ID}" onclick="doWishlistNow('{$PRODUCTS_ID}','1'); return false;" data-toggle="tooltip" title="{if $IN_WISHLIST}{$smarty.const.IMAGE_BUTTON_IN_WISHLIST_IN}{else}{$smarty.const.IMAGE_BUTTON_IN_WISHLIST}{/if}" aria-label="{if $IN_WISHLIST}{$smarty.const.IMAGE_BUTTON_IN_WISHLIST_IN}{else}{$smarty.const.IMAGE_BUTTON_IN_WISHLIST}{/if}"><i class="{if $IN_WISHLIST}fas{else}far{/if} fa-heart wishlist-icon-{$PRODUCTS_ID}"></i></a>
+                {/if}
+                {/if}
+                </div>
+
+                {if $LABEL_ID > 0}  
+                <div class="mb-3">
+                  {$PRODUCT_LABEL}
+                </div>
+                {/if}
+
+                <div class="rating-wrap small">
+                <ul class="list-inline">
+                <li class="list-inline-item"><span class="text-muted"><a class="popup-form" href="{$smarty.const.FILENAME_PRODUCT_REVIEWS_WRITE_POPUP}?products_id={$smarty.get.products_id}"><i class="fas fa-paper-plane"></i> {$smarty.const.TEXT_SITE_REVIEW_ADD}</a></span></li>
+                <li class="list-inline-item"><span class="text-muted"><a class="iframe" href="{$ASK_PRODUCT_QUESTION_LINK}"><i class="far fa-question-circle"></i> {#question#}</a></span></li>
+                </ul>
+                </div>                
+
+                <div class="mb-3">
+						{if {$PRODUCTS_QUANTITY} > 0 or {$PRODUCTS_PRICE_PLAIN} > 0}
+							<div class="price-block d-inline" itemprop="offers" itemscope itemtype="http://schema.org/Offer"> 
+								<span class="price">{$PRODUCTS_PRICE}</span>
+								<meta itemprop="price" content="{$PRODUCTS_PRICE_PLAIN}">
+								<meta itemprop="priceCurrency" content="{$smarty.session.currency}" />
+								<meta itemprop="availability" content="InStock" />
+								<meta itemprop="priceValidUntil" content="{$smarty.now + (1200*60*24*7)|date_format:"c"}" />
+								<meta itemprop="url" content="{$PRODUCTS_URL_INFO}" />
+							</div> 
+						{/if}                
+                </div>
+                {if $PRODUCTS_BONUS}<div class="bonus"><span class="small">{$smarty.const.TEXT_CASHBACK}</span> <span class="bonus cashback">{$PRODUCTS_BONUS}</span></div>{/if}
+                <!--
+                <div class="position-relative me-n4 mb-3">
+                  {if {$PRODUCTS_QUANTITY} > 0}
+                  <div class="product-badge product-available mt-n1"><i class="far fa-check-circle"></i>{$smarty.const.TEXT_IN_STOCK}</div>
+                  {else}
+                  <div class="product-badge product-not-available mt-n1"><i class="far fa-times-circle"></i>{$smarty.const.TEXT_OUT_OF_STOCK}</div>
+                  {/if}
+                </div>
+                -->
+                {$FORM_ACTION}
+                  {if $MODULE_product_options !=''}
+                  <div class="product_options mb-3">
+                  {$MODULE_product_options}
+                  </div>
+                  {/if}
+                  <div class="d-flex align-items-center mb-2">
+                  <div class="pe-2">
+                  <label class="sr-only" for="quantity{$PRODUCTS_ID}">{#quantity#}</label>
+				      <div class="input-group me-1 mt-2">
+				         <div class="input-group-prepend">
+					       <span class="btn btn-secondary value-control px-2" data-action="minus" data-target="quantity{$PRODUCTS_ID}"><i class="fa fa-minus"></i></span>
+				         </div>
+				        {$ADD_QTY}
+				         <div class="input-group-append">
+					       <span class="btn btn-secondary value-control px-2" data-action="plus" data-target="quantity{$PRODUCTS_ID}"><i class="fa fa-plus"></i></span>
+				         </div>
+				      </div>
+				      </div>
+                  <div class="flex-fill mt-2">
+                    <input type="hidden" name="products_id" value="{$PRODUCTS_ID}">
+                    <button class="btn btn-primary btn-shadow d-block w-100" type="submit" id="cart-link-{$PRODUCTS_ID}"><i class="fas fa-shopping-basket fs-lg me-2"></i>{$smarty.const.IMAGE_BUTTON_IN_CART}</button>
+                  </div>
+                  </div>
+                      
+                {$FORM_END}
+                <!-- Product panels-->
+                <div class="accordion mb-4" id="productPanels">
+                  <div class="accordion-item">
+                    <h3 class="accordion-header"><a class="accordion-button" href="#productInfo" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="productInfo"><i class="far fa-lightbulb text-muted fs-lg align-middle mt-n1 me-2"></i>{$smarty.const.TEXT_PAGE_INFORMATION}</a></h3>
+                    <div class="accordion-collapse collapse show" id="productInfo" data-bs-parent="#productPanels">
+                      <div class="accordion-body">
+                        <h6 class="fs-sm mb-2">{$PRODUCTS_NAME}</h6>
+                        {if $extra_fields_data}
+                        <ul class="fs-sm ps-4 mb-0">
+                        {foreach item=extra_fields from=$extra_fields_data} 
+                        {if $extra_fields@iteration > 5}{break}{/if} 
+                        <li class="{cycle values="spec-odd,spec-even"}">
+                        <span class="spec-name">{$extra_fields.NAME}:</span> <span class="spec-value font-weight-bold">{$extra_fields.VALUE}</span><br />
+                        </li>
+                        {/foreach}
+                        </ul>
+                        {/if}
+                        {if $specifications}
+                        <ul class="fs-sm ps-4 mb-0">
+                        {foreach name=outer item=spec_group from=$specifications_data}
+                        {foreach key=key_data item=spec from=$spec_group.DATA}
+                        {if $spec@iteration > 5}{break}{/if} 
+                        <li class="{cycle values="spec-odd,spec-even"}">
+                        <span class="spec-name">{$spec.NAME}:</span> <span class="spec-value font-weight-bold">{$spec.VALUE}</span><br />
+                        </li>
+                        {/foreach}
+                        {/foreach}
+                        </ul>
+                        {/if}
+                        
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h3 class="accordion-header"><a class="accordion-button collapsed" href="#shippingOptions" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><i class="fas fa-truck text-muted fs-lg align-middle mt-n1 me-2"></i>{$smarty.const.TEXT_PRODUCT_SHIPPING}</a></h3>
+                    <div class="accordion-collapse collapse" id="shippingOptions" data-bs-parent="#productPanels">
+                      <div class="accordion-body fs-sm">
+                        {$text_shipping_info}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h3 class="accordion-header"><a class="accordion-button collapsed" href="#localStore" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="localStore"><i class="fas fa-coins text-muted fs-lg align-middle mt-n1 me-2"></i>{$smarty.const.TEXT_PRODUCT_PAYMENT}</a></h3>
+                    <div class="accordion-collapse collapse" id="localStore" data-bs-parent="#productPanels">
+                      <div class="accordion-body">
+                        {$text_payment_info}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Product description section 1-->
+      <div class="row align-items-center py-md-3">
+
+   <div itemprop="description">{$PRODUCTS_DESCRIPTION}</div>
+
+	{if $MODULE_products_media != ''}
+	{$MODULE_products_media}
+	{/if}
+	
+	{if $MANUFACTURER}
+	<p itemprop="brand" itemscope itemtype="http://schema.org/Brand">
+	{#text_manufacturer#}: <span itemprop="name">{$MANUFACTURER}</span>
+	</p>
+	{/if}
+	
+	{if $PRODUCTS_MODEL}
+	<meta itemprop="sku" content="{$PRODUCTS_MODEL}" />
+	<meta itemprop="mpn" content="{$PRODUCTS_MODEL}" />
+	{/if}
+	
+	{if $PRODUCTS_WEIGHT > 0}
+	<meta itemprop="weight" content="{$PRODUCTS_WEIGHT}" />
+	{/if}
+
+	{if $PRODUCTS_EAN > 0}
+	<meta itemprop="gtin" content="{$PRODUCTS_EAN}" />
+	{/if}
+	
+	{if $extra_fields_data > 5}
+	<div class="description extra_fields text-muted">
+	{foreach item=extra_fields from=$extra_fields_data} 
+	<div class="{cycle values="spec-odd,spec-even"}">
+	<span class="spec-name">{$extra_fields.NAME}:</span> <span class="spec-value font-weight-bold">{$extra_fields.VALUE}</span><br />
+	</div>
+	{/foreach}
+	</div>
+	{/if}
+	{if $specifications_count > 5}
+	<div class="description specs text-muted">
+	{foreach name=outer item=spec_group from=$specifications_data}
+	<br />
+	{foreach key=key_data item=spec from=$spec_group.DATA}
+	<div class="{cycle values="spec-odd,spec-even"}">
+	<span class="spec-name">{$spec.NAME}:</span> <span class="spec-value font-weight-bold">{$spec.VALUE}</span><br />
+	</div>
+	{/foreach}
+	{/foreach}
+	<br />
+	</div>
+	{/if}
+	
+	{if $PRODUCTS_TAGS}
+	<div>
+	{#text_tags#}: 
+	<ul class="d-inline-block list-inline">
+	{foreach name=tags item=tag from=$tags_data}
+	<li class="list-inline-item">	
+	<a href="{$tag.LINK}"><span class="badge rounded-pill bg-primary">{$tag.NAME}</span></a>
+	</li>
+	{/foreach}
+	</ul>
+	</div>
+	{/if}
+
+	{if $MODULE_tpt != ''}
+	<p>
+	{$MODULE_tpt}
+	</p>
+	{/if}
+
+  {if $MODULE_tags}
+  {$MODULE_tags}
+  {/if}
+	
+  {if $MODULE_latest_news}
+  {$MODULE_latest_news}
+  {/if}
+
+  {if $MODULE_faq}
+  {$MODULE_faq}
+  {/if}
+
+  {if $MODULE_faq1}
+  {$MODULE_faq1}
+  {/if}
+
+  {if $MODULE_articles}
+  {$MODULE_articles}
+  {/if}	
+
+      </div>
+
+    </div>
+    
+    {$MODULE_products_reviews}
+    {$MODULE_also_purchased}
+    {$MODULE_cross_selling}
+    {$MODULE_similar_products}
+    
+    
+{if $smarty.const.DISPLAY_LAST_VIEWED =='true'}
+{if $products_history}
+<div class="container pt-5">
+  <h2 class="h3 text-center pb-4">{#title_viewed_products#}</h2>
+  <div class="tns-carousel tns-controls-static tns-controls-outside">
+    <div class="tns-carousel-inner" data-carousel-options="{literal}{&quot;items&quot;: 2, &quot;controls&quot;: true, &quot;nav&quot;: false, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2, &quot;gutter&quot;: 18},&quot;768&quot;:{&quot;items&quot;:3, &quot;gutter&quot;: 20}, &quot;1100&quot;:{&quot;items&quot;:4, &quot;gutter&quot;: 30}}}{/literal}">
+          {foreach name=aussen item=module_data from=$products_history}
+          {include file="{$smarty.const.DIR_FS_CATALOG}{$tpl_path}components/product-card/vamshop5-product-card-item.html"}
+          {/foreach}
+    </div>
+  </div>
+</div>
+{/if}
+{/if}
+    
+</div>    

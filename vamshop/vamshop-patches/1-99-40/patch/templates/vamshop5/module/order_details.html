@@ -1,0 +1,67 @@
+{config_load file="$language/lang_$language.conf" section="shopping_cart"}
+{config_load file="$language/lang_$language.conf" section="product_info"}
+{config_load file="$language/lang_$language.conf" section="checkout_confirmation"}
+
+    <!-- Page Title-->
+    <div class="page-title-overlap bg-dark pt-4">
+      <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+        <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+          {if $navtrail}
+          <nav aria-label="breadcrumb">
+              <div class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start" itemscope itemtype="http://schema.org/BreadcrumbList">
+              {$navtrail}
+              </div>
+          </nav>
+          {/if}
+        </div>
+        <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+          <h1 class="h3 text-light mb-0">{$smarty.const.NAVBAR_TITLE_SHOPPING_CART}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="container pb-5 mb-2 mb-md-4">
+      <div class="row">
+        <!-- List of items-->
+        <section class="col-lg-8 cart-list">
+          <div class="d-flex justify-content-between align-items-center pt-3 pb-4 pb-sm-5 mt-1">
+            <h2 class="h6 text-light mb-0">{$smarty.const.TEXT_CART_PRODUCTS}</h2><a class="btn btn-outline-primary btn-sm ps-2" href="{$smarty.const.FILENAME_DEFAULT}"><i class="fas fa-chevron-left me-2"></i>{$smarty.const.TEXT_BACK_TO_SHOPPING}</a>
+          </div>
+          
+{foreach from=$module_content key=category_name item=cart_data}
+{foreach name=aussen item=module_data from=$cart_data}
+{include file="{$smarty.const.DIR_FS_CATALOG}{$tpl_path}components/item/item-cart-list.html"}
+{/foreach}
+{/foreach}         
+
+        </section>
+        <!-- Sidebar-->
+        <aside class="col-lg-4 pt-4 pt-lg-0 ps-xl-5">
+        <div class="sticky-wrapper">
+        <div class="sticky-top">
+          <div class="bg-white rounded-3 shadow-lg p-4">
+            <div class="py-2 px-xl-2">
+              <div class="text-center mb-4 pb-3 border-bottom">
+                <h2 class="h6 mb-3 pb-1">{$smarty.const.TEXT_CART_SUBTOTAL}</h2>
+                <h3 class="fw-normal">{$TOTAL_SUBTOTAL_VALUE}</h3>
+              </div>
+
+            {if $smarty.session.customer_id && $balance_plain !='0'}
+            <div id="balance_div" class="mb-2">
+            <div class="widget-title fs-sm">{$smarty.const.TEXT_CASHBACK_AVAILABLE} <strong>{$balance}</strong></div>
+            </div>
+            {/if}
+              
+{if $MODULE_gift_cart}
+</form>
+{$MODULE_gift_cart}
+{/if}
+              
+              <a class="btn btn-primary btn-shadow d-block w-100 mt-4" href="{$smarty.const.FILENAME_CHECKOUT_SHIPPING}"><i class="fas fa-credit-card fs-lg me-2"></i>{$smarty.const.IMAGE_BUTTON_CHECKOUT}</a>
+            </div>
+          </div>
+        </div>
+        </div>
+        </aside>
+      </div>
+    </div>
+    
